@@ -29,9 +29,28 @@ const app = express();
 // CORS
 // =====================================
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://full-stack-ecommerce-client-gray.vercel.app",
+];
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: (origin, callback) => {
+      // Allow requests without an Origin header
+      // e.g. Postman / server-to-server requests
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(
+        new Error(`CORS blocked origin: ${origin}`)
+      );
+    },
 
     credentials: true,
 
@@ -138,19 +157,14 @@ const PORT =
 
 const startServer = async () => {
   try {
-
-    // Connect MongoDB first
     await connectDB();
 
-    // Start Express only after DB connects
     app.listen(PORT, () => {
       console.log(
         `Server is running on http://localhost:${PORT}`
       );
     });
-
   } catch (error) {
-
     console.error(
       "Failed to start server:",
       error
