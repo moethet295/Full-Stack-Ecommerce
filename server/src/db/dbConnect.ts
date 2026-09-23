@@ -1,24 +1,90 @@
-import mongoose, { Mongoose } from "mongoose"
+import mongoose from "mongoose";
 
+// =====================================
+// CONNECT DATABASE
+// =====================================
 
-export const connectDB = async() => {
-  try{
-    let DB_CONNECTION_STRING="";
-    
-    if(process.env.NODE_ENV === "development"){
-      DB_CONNECTION_STRING = process.env.MONGODB_LOCAL_URI!
+export const connectDB = async () => {
+
+  try {
+
+    let DB_CONNECTION_STRING = "";
+
+    // =====================================
+    // DEVELOPMENT DATABASE
+    // =====================================
+
+    if (
+      process.env.NODE_ENV ===
+      "development"
+    ) {
+
+      DB_CONNECTION_STRING =
+        process.env.MONGODB_LOCAL_URI || "";
+
     }
 
-    if(process.env.NODE_ENV === "production"){
-      DB_CONNECTION_STRING = process.env.MONGODB_URI!
+    // =====================================
+    // PRODUCTION DATABASE
+    // =====================================
+
+    if (
+      process.env.NODE_ENV ===
+      "production"
+    ) {
+
+      DB_CONNECTION_STRING =
+        process.env.MONGODB_URI || "";
+
     }
 
-    const response = await mongoose.connect(DB_CONNECTION_STRING);
-    console.log("database is connected", response.connection.host);
+    // =====================================
+    // CHECK CONNECTION STRING
+    // =====================================
 
-  }catch(error){
-    console.error("DB connection is error",error);
-    process.exit(1);
+    if (!DB_CONNECTION_STRING) {
+
+      throw new Error(
+        "MongoDB connection string is not defined"
+      );
+
+    }
+
+    // =====================================
+    // CONNECT DATABASE
+    // =====================================
+
+    const response =
+      await mongoose.connect(
+        DB_CONNECTION_STRING,
+        {
+          serverSelectionTimeoutMS: 10000,
+        }
+      );
+
+    // =====================================
+    // CONNECTION INFO
+    // =====================================
+
+    console.log(
+      "database is connected:",
+      response.connection.host
+    );
+
+    console.log(
+      "database name:",
+      response.connection.name
+    );
+
+  } catch (error) {
+
+    console.error(
+      "DB connection is error:",
+      error
+    );
+
+    // Let app.ts handle startup failure
+    throw error;
+
   }
-}
-
+};

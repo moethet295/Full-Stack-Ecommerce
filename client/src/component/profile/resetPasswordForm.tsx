@@ -5,24 +5,36 @@ interface ResetPasswordProps {
   email: string;
 }
 
+interface ForgotPasswordResponse {
+  message: string;
+}
+
+interface ApiError {
+  data?: {
+    message?: string;
+  };
+}
+
 function ResetPasswordForm({ email }: ResetPasswordProps) {
   const [forgotpasswordMutation, { isLoading }] =
     useForgotPasswordMutation();
 
   const changePasswordHandler = async () => {
     try {
-      const res = await forgotpasswordMutation({
+      const res = (await forgotpasswordMutation({
         email,
-      }).unwrap();
+      }).unwrap()) as ForgotPasswordResponse;
 
       toast.add({
         title: "Success",
         description:
-          res?.message ||
+          res.message ||
           "Password reset email sent successfully",
         type: "success",
       });
-    } catch (err: any) {
+    } catch (error: unknown) {
+      const err = error as ApiError;
+
       toast.add({
         title: "Error",
         description:
@@ -33,14 +45,16 @@ function ResetPasswordForm({ email }: ResetPasswordProps) {
     }
   };
 
-
-    return (
-        <button onClick={changePasswordHandler} disabled={isLoading} 
-        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full">
-            Change Password
-        </button>
-    )
-    
+  return (
+    <button
+      type="button"
+      onClick={changePasswordHandler}
+      disabled={isLoading}
+      className="w-full rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50"
+    >
+      {isLoading ? "Sending..." : "Change Password"}
+    </button>
+  );
 }
 
 export default ResetPasswordForm;

@@ -23,7 +23,7 @@ function ProductTableColumn({
         <div
           className="
             flex
-            min-h-[220px]
+            min-h-55
             flex-col
             items-center
             justify-center

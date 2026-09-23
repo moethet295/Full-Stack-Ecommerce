@@ -32,6 +32,7 @@ const app = express();
 app.use(
   cors({
     origin: "http://localhost:5173",
+
     credentials: true,
 
     methods: [
@@ -129,19 +130,34 @@ app.use(errorHandler);
 // =====================================
 
 const PORT =
-  process.env.PORT || 8000;
+  Number(process.env.PORT) || 8000;
 
 // =====================================
 // START SERVER
 // =====================================
 
-app.listen(
-  PORT,
-  () => {
-    connectDB();
+const startServer = async () => {
+  try {
 
-    console.log(
-      `Server is running on http://localhost:${PORT}`
+    // Connect MongoDB first
+    await connectDB();
+
+    // Start Express only after DB connects
+    app.listen(PORT, () => {
+      console.log(
+        `Server is running on http://localhost:${PORT}`
+      );
+    });
+
+  } catch (error) {
+
+    console.error(
+      "Failed to start server:",
+      error
     );
+
+    process.exit(1);
   }
-);
+};
+
+startServer();

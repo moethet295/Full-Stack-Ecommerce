@@ -303,7 +303,7 @@ function CartDrawer({
           shadow-xl
           transition-transform
           duration-300
-          sm:w-[420px]
+          sm:w-105
 
           ${
             isCardOpen
@@ -422,7 +422,7 @@ function CartDrawer({
               className="
                 flex
                 h-full
-                min-h-[400px]
+                min-h-100
                 flex-col
                 items-center
                 justify-center

@@ -60,7 +60,6 @@ function ProductCreate() {
         String(data.rating_count)
       );
 
-
       // ==============================
       // COLORS
       // ==============================
@@ -72,7 +71,6 @@ function ProductCreate() {
         );
       });
 
-
       // ==============================
       // SIZES
       // ==============================
@@ -83,7 +81,6 @@ function ProductCreate() {
           size
         );
       });
-
 
       // ==============================
       // IMAGES
@@ -98,7 +95,6 @@ function ProductCreate() {
         }
       });
 
-
       // ==============================
       // CREATE PRODUCT
       // ==============================
@@ -107,6 +103,9 @@ function ProductCreate() {
         formData
       ).unwrap();
 
+      // ==============================
+      // SUCCESS TOAST
+      // ==============================
 
       toast.add({
         title: "Success",
@@ -115,13 +114,13 @@ function ProductCreate() {
         type: "success",
       });
 
+      // ==============================
+      // GO BACK TO HOME
+      // ==============================
 
-      navigate(
-        "/admin/products"
-      );
+      navigate("/");
 
     } catch (error: any) {
-
       console.error(
         "CREATE PRODUCT ERROR:",
         error
@@ -136,7 +135,6 @@ function ProductCreate() {
       });
     }
   };
-
 
   return (
     <ProductForm

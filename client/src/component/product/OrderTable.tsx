@@ -61,12 +61,14 @@ import {
   fakeOrder,
 } from "@/lib/fakeOrder";
 
+
 // =====================================
 // FAKE ORDERS
 // =====================================
 
 const orders: Order[] =
   fakeOrder(15);
+
 
 // =====================================
 // ORDER STATUS STYLE
@@ -133,6 +135,7 @@ function getOrderStatusClass(
   }
 }
 
+
 // =====================================
 // PAYMENT STATUS STYLE
 // =====================================
@@ -188,6 +191,7 @@ function getPaymentStatusClass(
   }
 }
 
+
 // =====================================
 // CAPITALIZE STATUS
 // =====================================
@@ -201,6 +205,7 @@ function formatStatus(
     status.slice(1)
   );
 }
+
 
 // =====================================
 // ORDER TABLE
@@ -217,6 +222,7 @@ function OrderTable() {
     setSearch,
   ] = useState("");
 
+
   // =====================================
   // PAGINATION
   // =====================================
@@ -227,6 +233,7 @@ function OrderTable() {
   ] = useState(1);
 
   const itemsPerPage = 5;
+
 
   // =====================================
   // FILTER ORDERS
@@ -287,6 +294,7 @@ function OrderTable() {
 
     }, [search]);
 
+
   // =====================================
   // TOTAL PAGES
   // =====================================
@@ -300,6 +308,7 @@ function OrderTable() {
       )
     );
 
+
   // =====================================
   // START INDEX
   // =====================================
@@ -307,6 +316,7 @@ function OrderTable() {
   const startIndex =
     (currentPage - 1) *
     itemsPerPage;
+
 
   // =====================================
   // PAGINATED ORDERS
@@ -318,6 +328,7 @@ function OrderTable() {
       startIndex +
         itemsPerPage
     );
+
 
   // =====================================
   // SEARCH HANDLER
@@ -331,6 +342,7 @@ function OrderTable() {
 
     setCurrentPage(1);
   };
+
 
   // =====================================
   // PREVIOUS PAGE
@@ -347,6 +359,7 @@ function OrderTable() {
     );
   };
 
+
   // =====================================
   // NEXT PAGE
   // =====================================
@@ -361,6 +374,7 @@ function OrderTable() {
         )
     );
   };
+
 
   // =====================================
   // RETURN
@@ -401,13 +415,14 @@ function OrderTable() {
 
           </div>
 
+
           {/* SEARCH */}
 
           <div
             className="
               relative
               w-full
-              sm:w-[300px]
+              sm:w-75
             "
           >
 
@@ -447,6 +462,7 @@ function OrderTable() {
         </div>
 
       </CardHeader>
+
 
       {/* ================================= */}
       {/* CONTENT */}
@@ -512,7 +528,7 @@ function OrderTable() {
 
                   <TableHead
                     className="
-                      w-[60px]
+                      w-15
                       text-right
                     "
                   >
@@ -522,6 +538,7 @@ function OrderTable() {
                 </TableRow>
 
               </TableHeader>
+
 
               {/* =========================== */}
               {/* TABLE BODY */}
@@ -574,6 +591,7 @@ function OrderTable() {
                             {order._id}
                           </TableCell>
 
+
                           {/* ================= */}
                           {/* CUSTOMER */}
                           {/* ================= */}
@@ -583,7 +601,7 @@ function OrderTable() {
                             <div
                               className="
                                 flex
-                                min-w-[180px]
+                                min-w-45
                                 flex-col
                               "
                             >
@@ -617,6 +635,7 @@ function OrderTable() {
                             </div>
 
                           </TableCell>
+
 
                           {/* ================= */}
                           {/* ITEMS */}
@@ -654,6 +673,7 @@ function OrderTable() {
 
                           </TableCell>
 
+
                           {/* ================= */}
                           {/* TOTAL PRICE */}
                           {/* ================= */}
@@ -671,6 +691,7 @@ function OrderTable() {
                                 .toLocaleString()
                             }
                           </TableCell>
+
 
                           {/* ================= */}
                           {/* PAYMENT STATUS */}
@@ -696,6 +717,7 @@ function OrderTable() {
 
                           </TableCell>
 
+
                           {/* ================= */}
                           {/* ORDER STATUS */}
                           {/* ================= */}
@@ -719,6 +741,7 @@ function OrderTable() {
                             </Badge>
 
                           </TableCell>
+
 
                           {/* ================= */}
                           {/* CREATED DATE */}
@@ -785,6 +808,7 @@ function OrderTable() {
 
                           </TableCell>
 
+
                           {/* ================= */}
                           {/* ACTION */}
                           {/* ================= */}
@@ -797,31 +821,43 @@ function OrderTable() {
 
                             <DropdownMenu>
 
-                              <DropdownMenuTrigger>
+                              {/*
+                                IMPORTANT:
+                                DropdownMenuTrigger က button
+                                render လုပ်ပြီးသားဖြစ်လို့
+                                <DropdownMenuTrigger>
+                                  <Button />
+                                </DropdownMenuTrigger>
+                                မသုံးပါ။
 
-                                <Button
-                                  type="button"
+                                render prop သုံးပြီး
+                                button တစ်ခုပဲ render
+                                ဖြစ်အောင်လုပ်ထားပါတယ်။
+                              */}
 
-                                  variant="ghost"
-
-                                  size="icon"
-
-                                  className="
-                                    h-8
-                                    w-8
-                                  "
-                                >
-
-                                  <MoreHorizontal
+                              <DropdownMenuTrigger
+                                render={
+                                  <Button
+                                    type="button"
+                                    variant="ghost"
+                                    size="icon"
                                     className="
-                                      h-4
-                                      w-4
+                                      h-8
+                                      w-8
                                     "
                                   />
+                                }
+                              >
 
-                                </Button>
+                                <MoreHorizontal
+                                  className="
+                                    h-4
+                                    w-4
+                                  "
+                                />
 
                               </DropdownMenuTrigger>
+
 
                               <DropdownMenuContent
                                 align="end"
@@ -955,6 +991,7 @@ function OrderTable() {
 
         </div>
 
+
         {/* ================================= */}
         {/* PAGINATION */}
         {/* ================================= */}
@@ -1029,6 +1066,7 @@ function OrderTable() {
 
             </p>
 
+
             {/* PAGINATION BUTTONS */}
 
             <div
@@ -1067,6 +1105,7 @@ function OrderTable() {
 
               </Button>
 
+
               <div
                 className="
                   flex
@@ -1085,6 +1124,7 @@ function OrderTable() {
                 {currentPage}
               </div>
 
+
               <span
                 className="
                   text-sm
@@ -1093,6 +1133,7 @@ function OrderTable() {
               >
                 of {totalPages}
               </span>
+
 
               <Button
                 type="button"

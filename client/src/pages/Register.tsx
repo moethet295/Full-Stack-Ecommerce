@@ -15,7 +15,7 @@ import { useEffect } from "react";
 type FormInputs = z.infer<typeof registerSchema>;
 
 function Register() {
-  const [registerMutation, { isLoading, isError, error }] =
+  const [registerMutation, { isLoading, isError }] =
     useRegisterMutation();
   const userInfo = useSelector((state: RootState)=> state.auth.userInfo)
 
@@ -33,7 +33,6 @@ function Register() {
   const {
     register,
     handleSubmit,
-    reset,
     formState: { errors, isSubmitting },
   } = form;
 

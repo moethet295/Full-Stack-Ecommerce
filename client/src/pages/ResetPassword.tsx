@@ -6,11 +6,23 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
 import { useState } from "react";
-import { toast } from "@/components/ui/toast"
+import { toast } from "@/components/ui/toast";
 
 import {
   useResetPasswordMutation,
 } from "@/store/slices/userApi";
+
+// Reset password success response
+interface ResetPasswordResponse {
+  message?: string;
+}
+
+// API error response
+interface ApiError {
+  data?: {
+    message?: string;
+  };
+}
 
 function ResetPassword() {
   const { id: token } = useParams();
@@ -22,82 +34,89 @@ function ResetPassword() {
   const [resetPasswordMutation, { isLoading }] =
     useResetPasswordMutation();
 
-const handleSubmit = async (
-  e: React.FormEvent<HTMLFormElement>
-) => {
-  e.preventDefault();
+  const handleSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
 
-  // Check fields
-  if (!newPassword || !confirmPassword) {
-    toast.add({
-      title: "Error",
-      description: "Please fill in all fields",
-      type: "error",
-    });
-    return;
-  }
+    // Check fields
+    if (!newPassword || !confirmPassword) {
+      toast.add({
+        title: "Error",
+        description: "Please fill in all fields",
+        type: "error",
+      });
+      return;
+    }
 
-  // Check password match
-  if (newPassword !== confirmPassword) {
-    toast.add({
-      title: "Error",
-      description: "Passwords do not match",
-      type: "error",
-    });
-    return;
-  }
+    // Check password match
+    if (newPassword !== confirmPassword) {
+      toast.add({
+        title: "Error",
+        description: "Passwords do not match",
+        type: "error",
+      });
+      return;
+    }
 
-  // Check token
-  if (!token) {
-    toast.add({
-      title: "Error",
-      description: "Invalid or missing reset token",
-      type: "error",
-    });
-    return;
-  }
+    // Check token
+    if (!token) {
+      toast.add({
+        title: "Error",
+        description: "Invalid or missing reset token",
+        type: "error",
+      });
+      return;
+    }
 
-  try {
-    const res = await resetPasswordMutation({
-      token,
-      newPassword,
-    }).unwrap();
+    try {
+      const res = (await resetPasswordMutation({
+        token,
+        newPassword,
+      }).unwrap()) as ResetPasswordResponse;
 
-    // Clear form
-    setNewPassword("");
-    setConfirmPassword("");
+      // Clear form
+      setNewPassword("");
+      setConfirmPassword("");
 
-    // Success message
-    toast.add({
-      title: "Success",
-      description: res.message || "Password reset successfully!",
-      type: "success",
-    });
+      // Success message
+      toast.add({
+        title: "Success",
+        description:
+          res.message || "Password reset successfully!",
+        type: "success",
+      });
 
-    // Go to login
-    navigate("/login");
+      // Go to login
+      navigate("/login");
+    } catch (error: unknown) {
+      console.error("Reset Password Error:", error);
 
-  } catch (err: any) {
-    console.log(err);
+      const apiError = error as ApiError;
 
-    toast.add({
-      title: "Error",
-      description:
-        err?.data?.message || "Failed to reset password",
-      type: "error",
-    });
-  }
-};
+      toast.add({
+        title: "Error",
+        description:
+          apiError.data?.message ||
+          "Failed to reset password",
+        type: "error",
+      });
+    }
+  };
 
   return (
     <Card className="mx-auto mt-40 w-full max-w-md">
       <CardHeader>
-        <CardTitle>Reset Password</CardTitle>
+        <CardTitle>
+          Reset Password
+        </CardTitle>
       </CardHeader>
 
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
-
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-4"
+        >
           {/* New Password */}
           <div className="space-y-2">
             <Label htmlFor="newPassword">
@@ -144,7 +163,6 @@ const handleSubmit = async (
               ? "Changing password..."
               : "Change Password"}
           </Button>
-
         </form>
       </CardContent>
     </Card>
@@ -152,4 +170,3 @@ const handleSubmit = async (
 }
 
 export default ResetPassword;
-

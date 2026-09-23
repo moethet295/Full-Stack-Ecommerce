@@ -188,7 +188,7 @@ function ProductManagement() {
             className="
               inline-flex
               h-10
-              min-w-[190px]
+              min-w-47.5
               items-center
               justify-center
               gap-2
@@ -218,7 +218,7 @@ function ProductManagement() {
             className="
               inline-flex
               h-10
-              min-w-[190px]
+              min-w-47.5
               items-center
               justify-center
               gap-2
@@ -248,7 +248,7 @@ function ProductManagement() {
             className="
               inline-flex
               h-10
-              min-w-[190px]
+              min-w-47.5
               items-center
               justify-center
               gap-2

@@ -45,7 +45,7 @@ function ProductUpdateList() {
       <div
         className="
           flex
-          min-h-[300px]
+          min-h-75
           items-center
           justify-center
         "
@@ -197,7 +197,7 @@ function ProductUpdateList() {
             <div
               className="
                 flex
-                min-h-[200px]
+                min-h-50
                 items-center
                 justify-center
               "

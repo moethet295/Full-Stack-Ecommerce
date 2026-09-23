@@ -534,7 +534,7 @@ function ProductFilter() {
                   alt={product.name}
                   className="
                     w-full
-                    aspect-[3/4]
+                    aspect-3/4
                     object-cover
                     rounded-lg
                   "

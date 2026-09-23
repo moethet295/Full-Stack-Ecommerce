@@ -17,6 +17,18 @@ import { useForgotPasswordMutation } from "../store/slices/userApi";
 
 import { toast } from "@/components/ui/toast";
 
+// Forgot Password API success response type
+interface ForgotPasswordResponse {
+  message?: string;
+}
+
+// API error response type
+interface ApiError {
+  data?: {
+    message?: string;
+  };
+}
+
 function ForgotPassword() {
   const navigate = useNavigate();
 
@@ -31,30 +43,30 @@ function ForgotPassword() {
     e.preventDefault();
 
     try {
-      const result = await forgotPassword({
+      const result = (await forgotPassword({
         email,
-      }).unwrap();
+      }).unwrap()) as ForgotPasswordResponse;
 
-      // ✅ Success Toast
       toast.add({
         title: "Password Reset Email Sent",
         description:
-          result?.message ||
+          result.message ||
           "Please check your email for the password reset link.",
+        type: "success",
       });
 
       // Email input ရှင်းမယ်
       setEmail("");
-
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Forgot Password Error:", error);
 
-      // ❌ Error Toast
+      const apiError = error as ApiError;
+
       toast.add({
         type: "error",
         title: "Forgot Password Failed",
         description:
-          error?.data?.message ||
+          apiError.data?.message ||
           "Unable to send password reset email.",
         priority: "high",
       });
@@ -64,7 +76,6 @@ function ForgotPassword() {
   return (
     <div className="mx-auto w-full max-w-sm">
       <Card>
-
         <CardHeader>
           <CardTitle>
             Forgot Password
@@ -120,7 +131,6 @@ function ForgotPassword() {
             </div>
           </form>
         </CardContent>
-
       </Card>
     </div>
   );

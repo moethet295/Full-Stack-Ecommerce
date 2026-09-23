@@ -3,7 +3,6 @@ import { Label } from "@/components/ui/label";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { nameUpdateSchema } from "@/Schema/User";
 import { Button } from "@/components/ui/button";
 import { useNameUpdateMutation } from "@/store/slices/userApi";
@@ -131,7 +130,7 @@ function NameUpdateForm({ name }: NameUpdateFormProps) {
                 isUpdated ||
                 currentName === name
               }
-              className="h-10 w-full sm:w-[140px]"
+              className="h-10 w-full sm:w-35"
             >
               {isLoading
                 ? "Updating..."

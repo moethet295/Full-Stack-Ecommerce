@@ -1,8 +1,10 @@
 {
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-    "target": "es2016",
-    "lib": ["ES2016", "DOM"],
+
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+
     "module": "esnext",
     "types": ["vite/client"],
     "allowArbitraryExtensions": true,
@@ -21,13 +23,17 @@
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
+
+    /* Path Alias */
     "baseUrl": ".",
     "paths": {
       "@/*": [
         "./src/*"
       ]
     },
-      "ignoreDeprecations": "6.0",
+
+    "ignoreDeprecations": "6.0"
   },
+
   "include": ["src"]
 }

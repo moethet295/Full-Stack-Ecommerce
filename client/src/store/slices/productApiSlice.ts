@@ -88,17 +88,11 @@ export const productApiSlice =
           query: (id) =>
             `/products/${id}`,
 
-          providesTags: (
-            result,
-            error,
-            id
-          ) => [
-
+          providesTags: (_result, _error, id) => [
             {
               type: "Product",
               id,
             },
-
           ],
 
         }),
@@ -129,22 +123,18 @@ export const productApiSlice =
 
 
             if (category) {
-
               params.set(
                 "category",
                 category
               );
-
             }
 
 
             if (keyword) {
-
               params.set(
                 "keyword",
                 keyword
               );
-
             }
 
 
@@ -187,32 +177,26 @@ export const productApiSlice =
 
 
             if (minPrice) {
-
               params.set(
                 "minPrice",
                 minPrice
               );
-
             }
 
 
             if (maxPrice) {
-
               params.set(
                 "maxPrice",
                 maxPrice
               );
-
             }
 
 
             if (sortBy) {
-
               params.set(
                 "sortBy",
                 sortBy
               );
-
             }
 
 
@@ -320,11 +304,9 @@ export const productApiSlice =
 
 
           invalidatesTags: (
-            result,
-            error,
-            {
-              id,
-            }
+            _result,
+            _error,
+            { id }
           ) => [
 
             {
@@ -360,8 +342,6 @@ export const productApiSlice =
 
           }),
 
-          // Delete success ဖြစ်တာနဲ့
-          // product queries အားလုံး refresh ဖြစ်မယ်
           invalidatesTags: [
             "Product",
           ],

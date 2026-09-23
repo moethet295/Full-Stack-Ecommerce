@@ -301,7 +301,7 @@ function UserManagement() {
       <div
         className="
           flex
-          min-h-[400px]
+          min-h-100
           items-center
           justify-center
         "
@@ -327,7 +327,7 @@ function UserManagement() {
       <div
         className="
           flex
-          min-h-[400px]
+          min-h-100
           items-center
           justify-center
         "

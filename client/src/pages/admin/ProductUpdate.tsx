@@ -94,7 +94,7 @@ function ProductUpdate() {
       <div
         className="
           flex
-          min-h-[300px]
+          min-h-75
           items-center
           justify-center
         "

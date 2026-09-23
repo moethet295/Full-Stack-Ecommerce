@@ -333,7 +333,7 @@ function ProductForm({
 
         <div
           className="
-            min-h-[150px]
+            min-h-37.5
             rounded-md
             border
             border-gray-300

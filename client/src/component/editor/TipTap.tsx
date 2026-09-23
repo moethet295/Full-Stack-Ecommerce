@@ -105,7 +105,7 @@ const TipTap = ({ value, onChange }: TipTapProps) => {
       {/* Writing Area */}
       <EditorContent
         editor={editor}
-        className="min-h-[110px] outline-none"
+        className="min-h-27.5 outline-none"
       />
     </div>
   );

@@ -136,7 +136,7 @@ function ProductChart({
           <ChartContainer
             config={chartConfig}
             className="
-              min-h-[300px]
+              min-h-75
               w-full
             "
           >
@@ -233,7 +233,7 @@ function ProductChart({
           <div
             className="
               flex
-              min-h-[300px]
+              min-h-75
               items-center
               justify-center
             "

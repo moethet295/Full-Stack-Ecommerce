@@ -12,7 +12,7 @@ function PaymentCancel() {
     <div
       className="
         flex
-        min-h-[500px]
+        min-h-125
         items-center
         justify-center
       "

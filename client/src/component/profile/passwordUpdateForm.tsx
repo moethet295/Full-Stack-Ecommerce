@@ -152,7 +152,7 @@ const onSubmit: SubmitHandler<FormInput> = async (data) => {
               <Button
                 type="submit"
                 disabled={isLoading || isUpdated}
-                className="h-10 w-full sm:w-[160px]"
+                className="h-10 w-full sm:w-40"
               >
                 {isLoading
                   ? "Updating..."
