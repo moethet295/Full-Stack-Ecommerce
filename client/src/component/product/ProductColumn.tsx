@@ -31,7 +31,7 @@ const columnHelper =
 // PRODUCT COLUMNS
 // =====================================
 
-function useProductColumns() {
+function useProductColumns() { 
 
   const columns =
     columnHelper.columns([
@@ -175,7 +175,7 @@ function useProductColumns() {
 
                   <span
                     className="
-                      max-w-[220px]
+                      max-w-55
                       truncate
                       text-sm
                       font-medium

@@ -11,6 +11,8 @@ import {
 import {
   useGetAllOrdersQuery,
   useUpdateOrderStatusMutation,
+  type Order,
+  type OrderItem,
   type OrderStatus,
 } from "@/store/slices/orderApi";
 
@@ -33,25 +35,38 @@ const statusOptions:
 
 function OrderManagement() {
 
+  // =====================================
+  // SEARCH
+  // =====================================
+
   const [
     search,
     setSearch,
   ] =
-    useState("");
+    useState<string>("");
 
   // =====================================
-  // API
+  // GET ORDERS
   // =====================================
 
   const {
-    data:
-      orders = [],
-
+    data,
     isLoading,
-
     isError,
   } =
     useGetAllOrdersQuery();
+
+  // =====================================
+  // TYPE ORDERS
+  // =====================================
+
+  const orders:
+    Order[] =
+    data ?? [];
+
+  // =====================================
+  // UPDATE ORDER
+  // =====================================
 
   const [
     updateOrderStatus,
@@ -63,12 +78,16 @@ function OrderManagement() {
     useUpdateOrderStatusMutation();
 
   // =====================================
-  // FILTER
+  // FILTER ORDERS
   // =====================================
 
-  const filteredOrders =
+  const filteredOrders:
+    Order[] =
     orders.filter(
-      (order) => {
+      (
+        order:
+          Order
+      ) => {
 
         const keyword =
           search
@@ -79,21 +98,36 @@ function OrderManagement() {
           return true;
         }
 
+        // ===============================
+        // PRODUCT NAMES
+        // ===============================
+
         const products =
           order.orderItems
             .map(
-              (item) =>
+              (
+                item:
+                  OrderItem
+              ) =>
                 item.name
             )
             .join(" ")
             .toLowerCase();
 
+        // ===============================
+        // CUSTOMER
+        // ===============================
+
         const customer =
           order
             .shippingAddress
             ?.fullName
-            ?.toLowerCase() ||
+            ?.toLowerCase() ??
           "";
+
+        // ===============================
+        // SEARCH
+        // ===============================
 
         return (
           order._id
@@ -101,9 +135,11 @@ function OrderManagement() {
             .includes(
               keyword
             ) ||
+
           customer.includes(
             keyword
           ) ||
+
           products.includes(
             keyword
           )
@@ -112,36 +148,58 @@ function OrderManagement() {
     );
 
   // =====================================
-  // STATS
+  // PAID SALES
   // =====================================
 
-  const paidSales =
+  const paidSales:
+    number =
     orders
       .filter(
-        (order) =>
+        (
+          order:
+            Order
+        ) =>
           order.paymentStatus ===
           "paid"
       )
       .reduce(
         (
-          total,
-          order
+          total:
+            number,
+          order:
+            Order
         ) =>
           total +
           order.totalPrice,
         0
       );
 
-  const pendingCount =
+  // =====================================
+  // PENDING COUNT
+  // =====================================
+
+  const pendingCount:
+    number =
     orders.filter(
-      (order) =>
+      (
+        order:
+          Order
+      ) =>
         order.orderStatus ===
         "pending"
     ).length;
 
-  const deliveredCount =
+  // =====================================
+  // DELIVERED COUNT
+  // =====================================
+
+  const deliveredCount:
+    number =
     orders.filter(
-      (order) =>
+      (
+        order:
+          Order
+      ) =>
         order.orderStatus ===
         "delivered"
     ).length;
@@ -152,7 +210,8 @@ function OrderManagement() {
 
   const statusHandler =
     async (
-      id: string,
+      id:
+        string,
       orderStatus:
         OrderStatus
     ) => {
@@ -183,11 +242,12 @@ function OrderManagement() {
       <div
         className="
           flex
-          min-h-[400px]
+          min-h-100
           items-center
           justify-center
         "
       >
+
         <Loader2
           className="
             h-7
@@ -195,6 +255,7 @@ function OrderManagement() {
             animate-spin
           "
         />
+
       </div>
     );
   }
@@ -233,7 +294,9 @@ function OrderManagement() {
       "
     >
 
+      {/* ================================= */}
       {/* HEADER */}
+      {/* ================================= */}
 
       <div>
 
@@ -330,17 +393,23 @@ function OrderManagement() {
 
         <input
           type="text"
-          value={search}
+
+          value={
+            search
+          }
+
           onChange={
-            (event) =>
+            (
+              event:
+                React.ChangeEvent<HTMLInputElement>
+            ) =>
               setSearch(
                 event.target.value
               )
           }
-          placeholder="
-            Search order,
-            customer or product...
-          "
+
+          placeholder="Search order, customer or product..."
+
           className="
             w-full
             bg-transparent
@@ -375,10 +444,14 @@ function OrderManagement() {
           <table
             className="
               w-full
-              min-w-[1000px]
+              min-w-250
               text-left
             "
           >
+
+            {/* =========================== */}
+            {/* TABLE HEADER */}
+            {/* =========================== */}
 
             <thead
               className="
@@ -462,6 +535,10 @@ function OrderManagement() {
 
             </thead>
 
+            {/* =========================== */}
+            {/* TABLE BODY */}
+            {/* =========================== */}
+
             <tbody
               className="
                 divide-y
@@ -469,14 +546,24 @@ function OrderManagement() {
             >
 
               {filteredOrders.map(
-                (order) => {
+                (
+                  order:
+                    Order
+                ) => {
 
-                  const totalQuantity =
+                  // =======================
+                  // TOTAL QUANTITY
+                  // =======================
+
+                  const totalQuantity:
+                    number =
                     order.orderItems
                       .reduce(
                         (
-                          total,
-                          item
+                          total:
+                            number,
+                          item:
+                            OrderItem
                         ) =>
                           total +
                           item.quantity,
@@ -489,12 +576,15 @@ function OrderManagement() {
                       key={
                         order._id
                       }
+
                       className="
                         hover:bg-gray-50
                       "
                     >
 
+                      {/* ================= */}
                       {/* ORDER ID */}
+                      {/* ================= */}
 
                       <td
                         className="
@@ -524,7 +614,8 @@ function OrderManagement() {
                             text-gray-400
                           "
                         >
-                          {totalQuantity}{" "}
+                          {totalQuantity}
+                          {" "}
                           item
                           {totalQuantity !==
                           1
@@ -534,7 +625,9 @@ function OrderManagement() {
 
                       </td>
 
+                      {/* ================= */}
                       {/* CUSTOMER */}
+                      {/* ================= */}
 
                       <td
                         className="
@@ -551,7 +644,7 @@ function OrderManagement() {
                         >
                           {order
                             .shippingAddress
-                            ?.fullName ||
+                            ?.fullName ??
                             "Customer"}
                         </p>
 
@@ -564,13 +657,15 @@ function OrderManagement() {
                         >
                           {order
                             .shippingAddress
-                            ?.phone ||
+                            ?.phone ??
                             "-"}
                         </p>
 
                       </td>
 
+                      {/* ================= */}
                       {/* PRODUCTS */}
+                      {/* ================= */}
 
                       <td
                         className="
@@ -589,14 +684,17 @@ function OrderManagement() {
                             .orderItems
                             .map(
                               (
-                                item,
-                                index
+                                item:
+                                  OrderItem,
+                                index:
+                                  number
                               ) => (
 
                                 <div
                                   key={
                                     `${item.productId}-${index}`
                                   }
+
                                   className="
                                     flex
                                     items-center
@@ -604,15 +702,19 @@ function OrderManagement() {
                                   "
                                 >
 
+                                  {/* IMAGE */}
+
                                   {item.image ? (
 
                                     <img
                                       src={
                                         item.image
                                       }
+
                                       alt={
                                         item.name
                                       }
+
                                       className="
                                         h-9
                                         w-9
@@ -648,11 +750,13 @@ function OrderManagement() {
 
                                   )}
 
+                                  {/* PRODUCT INFO */}
+
                                   <div>
 
                                     <p
                                       className="
-                                        max-w-[180px]
+                                        max-w-45
                                         truncate
                                         text-xs
                                         font-medium
@@ -668,9 +772,13 @@ function OrderManagement() {
                                       "
                                     >
                                       {item.size}
+
                                       {" / "}
+
                                       {item.color}
+
                                       {" × "}
+
                                       {item.quantity}
                                     </p>
 
@@ -685,7 +793,9 @@ function OrderManagement() {
 
                       </td>
 
+                      {/* ================= */}
                       {/* TOTAL */}
+                      {/* ================= */}
 
                       <td
                         className="
@@ -701,7 +811,9 @@ function OrderManagement() {
                           .toLocaleString()}
                       </td>
 
+                      {/* ================= */}
                       {/* PAYMENT */}
+                      {/* ================= */}
 
                       <td
                         className="
@@ -718,7 +830,9 @@ function OrderManagement() {
 
                       </td>
 
+                      {/* ================= */}
                       {/* ORDER STATUS */}
+                      {/* ================= */}
 
                       <td
                         className="
@@ -731,12 +845,15 @@ function OrderManagement() {
                           value={
                             order.orderStatus
                           }
+
                           disabled={
                             isUpdating
                           }
+
                           onChange={
                             (
-                              event
+                              event:
+                                React.ChangeEvent<HTMLSelectElement>
                             ) =>
                               statusHandler(
                                 order._id,
@@ -746,6 +863,7 @@ function OrderManagement() {
                                   OrderStatus
                               )
                           }
+
                           className="
                             rounded-lg
                             border
@@ -763,13 +881,15 @@ function OrderManagement() {
 
                           {statusOptions.map(
                             (
-                              status
+                              status:
+                                OrderStatus
                             ) => (
 
                               <option
                                 key={
                                   status
                                 }
+
                                 value={
                                   status
                                 }
@@ -786,7 +906,9 @@ function OrderManagement() {
 
                       </td>
 
+                      {/* ================= */}
                       {/* DATE */}
+                      {/* ================= */}
 
                       <td
                         className="
@@ -813,7 +935,9 @@ function OrderManagement() {
 
         </div>
 
+        {/* ================================= */}
         {/* EMPTY */}
+        {/* ================================= */}
 
         {filteredOrders.length ===
           0 && (
@@ -855,7 +979,7 @@ function OrderManagement() {
 }
 
 // =====================================
-// STAT CARD
+// STAT CARD PROPS
 // =====================================
 
 interface StatCardProps {
@@ -865,6 +989,10 @@ interface StatCardProps {
   value:
     string;
 }
+
+// =====================================
+// STAT CARD
+// =====================================
 
 function StatCard({
   title,
@@ -922,6 +1050,7 @@ function StatusBadge({
     status ===
     "paid"
   ) {
+
     className =
       "bg-green-100 text-green-700";
   }
@@ -930,6 +1059,7 @@ function StatusBadge({
     status ===
     "failed"
   ) {
+
     className =
       "bg-red-100 text-red-700";
   }
@@ -938,6 +1068,7 @@ function StatusBadge({
     status ===
     "refunded"
   ) {
+
     className =
       "bg-orange-100 text-orange-700";
   }
@@ -965,8 +1096,9 @@ function StatusBadge({
 // =====================================
 
 function formatStatus(
-  status: string
-) {
+  status:
+    string
+): string {
 
   return (
     status
